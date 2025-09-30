@@ -38,7 +38,7 @@ public class MovieServiceImpl implements MovieService {
         List<Movie> savedMovie=movieRepo.saveAll(movies);
         return savedMovie.stream()
                 .map(movie -> MovieResponse.builder()
-                        .id(movie.getId())
+                        .movieId(movie.getMovieId())
                         .tittle(movie.getTittle())
                         .description(movie.getDescription())
                         .genre(movie.getGenre())
@@ -58,7 +58,7 @@ public class MovieServiceImpl implements MovieService {
 
         Movie savedMovie=movieRepo.save(movie);
         return MovieResponse.builder()
-                .id(savedMovie.getId())
+                .movieId(savedMovie.getMovieId())
                 .tittle(savedMovie.getTittle())
                 .description(savedMovie.getDescription())
                 .genre(savedMovie.getGenre())
@@ -69,10 +69,10 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Page<MovieResponse> getAllMovies(int page,int size) {
 
-        Pageable pageable= PageRequest.of(page,size, Sort.by("id").ascending());
+        Pageable pageable= PageRequest.of(page,size, Sort.by("movieId").ascending());
         Page<Movie> moviePage =movieRepo.findAll(pageable);
       return moviePage.map(movie->MovieResponse.builder()
-              .id(movie.getId())
+              .movieId(movie.getMovieId())
               .tittle(movie.getTittle())
               .genre(movie.getGenre())
               .description(movie.getDescription())
@@ -83,12 +83,12 @@ public class MovieServiceImpl implements MovieService {
 
 
     @Override
-    public MovieResponse getById(Long id) {
+    public MovieResponse getById(Long movieId) {
 
-        Movie movie=movieRepo.findById(id).orElseThrow(()-> new RuntimeException("Movie Not Found with: "+id));
+        Movie movie=movieRepo.findById(movieId).orElseThrow(()-> new RuntimeException("Movie Not Found with: "+movieId));
 
         return MovieResponse.builder()
-                .id(movie.getId())
+                .movieId(movie.getMovieId())
                 .tittle(movie.getTittle())
                 .genre(movie.getGenre())
                 .description(movie.getDescription())
@@ -97,9 +97,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieResponse updateMovie(MovieRequest movieRequest, Long id) {
+    public MovieResponse updateMovie(MovieRequest movieRequest, Long movieId) {
 
-        Movie movie=movieRepo.findById(id).orElseThrow(()->new RuntimeException("Movie Not Found With id: "+id));
+        Movie movie=movieRepo.findById(movieId).orElseThrow(()->new RuntimeException("Movie Not Found With id: "+movieId));
 
         movie.setTittle(movieRequest.getTittle());
         movie.setDescription(movieRequest.getDescription());
@@ -107,7 +107,7 @@ public class MovieServiceImpl implements MovieService {
 
         Movie update=movieRepo.save(movie);
         return MovieResponse.builder()
-                .id(update.getId())
+                .movieId(update.getMovieId())
                 .tittle(update.getTittle())
                 .description(update.getDescription())
                 .releaseDate(update.getReleaseDate())
@@ -116,10 +116,10 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public String deleteMovie(Long id) {
-        Movie movie=movieRepo.findById(id).orElseThrow(()->new RuntimeException("Not Found "));
+    public String deleteMovie(Long movieId) {
+        Movie movie=movieRepo.findById(movieId).orElseThrow(()->new RuntimeException("Not Found "));
 
         movieRepo.delete(movie);
-        return "Movie with id: "+id+" Deleted Successfully";
+        return "Movie with id: "+movieId+" Deleted Successfully";
     }
 }

@@ -7,6 +7,7 @@ import com.test.movie_review.pojo.UserRegReq;
 import com.test.movie_review.pojo.UserRes;
 import com.test.movie_review.repository.RoleRepo;
 import com.test.movie_review.repository.UserRepo;
+import com.test.movie_review.security.JwtUtil;
 import com.test.movie_review.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class UserRegisterImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
 
@@ -44,7 +45,7 @@ public class UserRegisterImpl implements UserService {
         Users users=Users.builder()
                 .username(userRegReq.getUsername())
                 .email(userRegReq.getEmail())
-                .password(userRegReq.getPassword())
+                .password(passwordEncoder.encode(userRegReq.getPassword()))
                 .roles(Set.of(userRole))
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -52,7 +53,7 @@ public class UserRegisterImpl implements UserService {
         Users savedUser=userRepo.save(users);
 
         return UserRes.builder()
-                .id(savedUser.getUserId())
+                .userId(savedUser.getUserId())
                 .email(savedUser.getEmail())
                 .username(savedUser.getUsername())
                 .build();
@@ -63,7 +64,30 @@ public class UserRegisterImpl implements UserService {
     @Override
     public String userLogin(LoginReq loginReq) {
 
-        if()
-        return "";
+        Users user=userRepo.findByUsername(loginReq.getUsername())
+                .orElseThrow(()->new RuntimeException("Invalid Username or Password"));
+
+        if(!passwordEncoder.matches(loginReq.getPassword(),user.getPassword())){
+            throw new RuntimeException(("Invalid Username or Password"));
+        }
+        return  jwtUtil.generateToken(user.getUsername());
     }
+
+
+    @Override
+    public UserRes getCurrentUser(String username) {
+
+        Users user=userRepo.findByUsername(username).orElseThrow(()-> new RuntimeException("Username Not Found"));
+
+        return UserRes.builder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
+
+    }
+
+
+
+
 }

@@ -3,8 +3,10 @@ package com.test.movie_review.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -12,6 +14,8 @@ import java.util.Date;
 @Entity
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Review {
 
     @Id
@@ -23,7 +27,7 @@ public class Review {
     private Users users;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "movieId")
     private Movie movie;
 
     @Min(value = 1)

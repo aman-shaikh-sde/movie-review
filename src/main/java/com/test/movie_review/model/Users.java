@@ -1,8 +1,10 @@
 package com.test.movie_review.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -11,6 +13,8 @@ import java.util.Set;
 @Entity
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +22,7 @@ public class Users {
     private String password;
     private String email;
     private String username;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

@@ -14,7 +14,7 @@ import java.util.Date;
 public class MovieResponse {
 
 
-    private long id;
+    private long movieId;
     private String tittle;
     private String description;
     private Date releaseDate;

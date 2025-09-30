@@ -51,9 +51,9 @@ public class MovieController {
         return new  ResponseEntity<>(movie,HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MovieResponse> getById(@PathVariable Long id){
-        MovieResponse movieResponse=movieService.getById(id);
+    @GetMapping("/{movieId}")
+    public ResponseEntity<MovieResponse> getById(@PathVariable Long movieId){
+        MovieResponse movieResponse=movieService.getById(movieId);
         return new ResponseEntity<>(movieResponse,HttpStatus.OK);
     }
 
@@ -63,9 +63,9 @@ public class MovieController {
         return new ResponseEntity<>(movieResponse,HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteMovie(@PathVariable Long id){
-        String deleted=movieService.deleteMovie(id);
+    @DeleteMapping("/{movieId}")
+    public ResponseEntity<String> deleteMovie(@PathVariable Long movieId){
+        String deleted=movieService.deleteMovie(movieId);
         return new ResponseEntity<>(deleted,HttpStatus.OK);
     }
 }

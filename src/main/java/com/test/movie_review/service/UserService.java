@@ -8,5 +8,6 @@ public interface UserService {
 
     public UserRes registerUser(UserRegReq userRegReq);
     public String userLogin(LoginReq loginReq);
+    public UserRes getCurrentUser(String username);
 
 }

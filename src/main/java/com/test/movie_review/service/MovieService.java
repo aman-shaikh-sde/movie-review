@@ -15,8 +15,8 @@ public interface MovieService {
 
     List<MovieResponse> addMultipleMovies(MovieListReq movieRequest);
 
-    public MovieResponse getById(Long id);
+    public MovieResponse getById(Long movieId);
 
-    public MovieResponse updateMovie(MovieRequest movieRequest,Long id);
-    public String deleteMovie(Long id);
+    public MovieResponse updateMovie(MovieRequest movieRequest,Long movieId);
+    public String deleteMovie(Long movieId);
 }
